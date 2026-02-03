@@ -44,3 +44,4 @@ claude-test is a test project for experimenting with Claude Code capabilities.
 - Feel free to experiment with different approaches
 - Ask clarifying questions when requirements are ambiguous
 - Remember: User cannot run local servers - always deploy to GitHub Pages for testing
+- Display URLs as clickable markdown links `[text](url)`, not in code blocks
