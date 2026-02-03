@@ -3,218 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Watchlist</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #fff;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2rem;
-        }
-
-        .add-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .add-form input {
-            flex: 1;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        .add-form input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .add-form button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: #e94560;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .add-form button:hover {
-            background: #ff6b6b;
-        }
-
-        .movie-list {
-            list-style: none;
-        }
-
-        .movie-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: background 0.2s;
-        }
-
-        .movie-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .movie-item.watched {
-            opacity: 0.6;
-        }
-
-        .movie-item.watched .movie-title {
-            text-decoration: line-through;
-        }
-
-        .movie-title {
-            flex: 1;
-            font-size: 1.1rem;
-        }
-
-        .btn-watch, .btn-delete {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-        }
-
-        .btn-watch {
-            background: #4ecca3;
-            color: #1a1a2e;
-        }
-
-        .btn-delete {
-            background: #e94560;
-            color: #fff;
-        }
-
-        .btn-watch:hover, .btn-delete:hover {
-            opacity: 0.8;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .stats {
-            text-align: center;
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-        }
-    </style>
+    <meta name="theme-color" content="#0f0f1a">
+    <title>Watchlist - Movie Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Movie Watchlist</h1>
+    <div class="app">
+        <!-- Home Page -->
+        <main class="page page-home active" id="page-home">
+            <header class="header">
+                <h1 class="header-title">Discover</h1>
+            </header>
 
-        <form class="add-form" id="addForm">
-            <input type="text" id="movieInput" placeholder="Enter movie title..." required>
-            <button type="submit">Add</button>
-        </form>
+            <div class="search-container">
+                <div class="search-box">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <label for="search-input" class="visually-hidden">Search movies</label>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search movies...">
+                    <button type="button" id="clear-search" class="clear-search" aria-label="Clear search" hidden>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
 
-        <div class="stats" id="stats"></div>
+            <section class="content" id="home-content">
+                <h2 class="section-title">Popular Movies</h2>
+                <div class="movie-grid" id="movie-grid">
+                    <!-- Movies loaded via JS -->
+                </div>
+            </section>
+        </main>
 
-        <ul class="movie-list" id="movieList"></ul>
+        <!-- Lists Page -->
+        <main class="page page-lists" id="page-lists">
+            <header class="header">
+                <h1 class="header-title">My Lists</h1>
+                <button type="button" class="btn-icon" id="create-list-btn" aria-label="Create new list">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 5v14"></path>
+                        <path d="M5 12h14"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <section class="content">
+                <div class="lists-container" id="lists-container">
+                    <!-- Lists loaded via JS -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Profile Page -->
+        <main class="page page-profile" id="page-profile">
+            <header class="header">
+                <h1 class="header-title">Profile</h1>
+            </header>
+
+            <section class="content">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M20 21a8 8 0 0 0-16 0"></path>
+                        </svg>
+                    </div>
+                    <h2 class="profile-name">Movie Enthusiast</h2>
+                    <p class="profile-subtitle">Tracking movies since 2024</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-total">0</span>
+                        <span class="stat-label">Movies Saved</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-watched">0</span>
+                        <span class="stat-label">Watched</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-lists">0</span>
+                        <span class="stat-label">Lists</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Settings Page -->
+        <main class="page page-settings" id="page-settings">
+            <header class="header">
+                <h1 class="header-title">Settings</h1>
+            </header>
+
+            <section class="content">
+                <div class="settings-group">
+                    <h2 class="settings-group-title">Data</h2>
+                    <button type="button" class="settings-item" id="export-data">
+                        <div class="settings-item-content">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" x2="12" y1="3" y2="15"></line>
+                            </svg>
+                            <span>Export Data</span>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m9 18 6-6-6-6"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="settings-item settings-item-danger" id="clear-data">
+                        <div class="settings-item-content">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3 6h18"></path>
+                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                            </svg>
+                            <span>Clear All Data</span>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m9 18 6-6-6-6"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="settings-group">
+                    <h2 class="settings-group-title">About</h2>
+                    <div class="settings-item">
+                        <div class="settings-item-content">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 16v-4"></path>
+                                <path d="M12 8h.01"></path>
+                            </svg>
+                            <span>Version</span>
+                        </div>
+                        <span class="settings-value">1.0.0</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Movie Detail Modal -->
+        <div class="modal" id="movie-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+            <div class="modal-backdrop" id="modal-backdrop"></div>
+            <div class="modal-content">
+                <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+                <div class="modal-body" id="modal-body">
+                    <!-- Movie details loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add to List Modal -->
+        <div class="modal" id="list-modal" role="dialog" aria-modal="true" aria-labelledby="list-modal-title" hidden>
+            <div class="modal-backdrop" id="list-modal-backdrop"></div>
+            <div class="modal-content modal-content-sm">
+                <div class="modal-header">
+                    <h2 id="list-modal-title" class="modal-title">Add to List</h2>
+                    <button type="button" class="modal-close" id="list-modal-close" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="list-modal-body">
+                    <!-- List options loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Create List Modal -->
+        <div class="modal" id="create-list-modal" role="dialog" aria-modal="true" aria-labelledby="create-list-title" hidden>
+            <div class="modal-backdrop" id="create-list-backdrop"></div>
+            <div class="modal-content modal-content-sm">
+                <div class="modal-header">
+                    <h2 id="create-list-title" class="modal-title">Create New List</h2>
+                    <button type="button" class="modal-close" id="create-list-close" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form class="modal-body" id="create-list-form">
+                    <div class="form-group">
+                        <label for="list-name" class="form-label">List Name</label>
+                        <input type="text" id="list-name" class="form-input" placeholder="e.g., Watch Later" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create List</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" aria-label="Main navigation">
+            <button type="button" class="nav-item active" data-page="home" aria-current="page">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="nav-label">Home</span>
+            </button>
+            <button type="button" class="nav-item" data-page="lists">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"></path>
+                    <path d="M15 3v4a2 2 0 0 0 2 2h4"></path>
+                </svg>
+                <span class="nav-label">Lists</span>
+            </button>
+            <button type="button" class="nav-item" data-page="profile">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="8" r="5"></circle>
+                    <path d="M20 21a8 8 0 0 0-16 0"></path>
+                </svg>
+                <span class="nav-label">Profile</span>
+            </button>
+            <button type="button" class="nav-item" data-page="settings">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span class="nav-label">Settings</span>
+            </button>
+        </nav>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'movieWatchlist';
-
-        let movies = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-        function saveMovies() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(movies));
-        }
-
-        function renderMovies() {
-            const list = document.getElementById('movieList');
-            const stats = document.getElementById('stats');
-
-            if (movies.length === 0) {
-                list.innerHTML = '<li class="empty-state">No movies yet. Add one above!</li>';
-                stats.textContent = '';
-                return;
-            }
-
-            const watched = movies.filter(m => m.watched).length;
-            stats.textContent = `${watched} of ${movies.length} watched`;
-
-            list.innerHTML = movies.map((movie, index) => `
-                <li class="movie-item ${movie.watched ? 'watched' : ''}">
-                    <span class="movie-title">${escapeHtml(movie.title)}</span>
-                    <button class="btn-watch" onclick="toggleWatched(${index})">
-                        ${movie.watched ? 'Unwatch' : 'Watched'}
-                    </button>
-                    <button class="btn-delete" onclick="deleteMovie(${index})">Remove</button>
-                </li>
-            `).join('');
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function addMovie(title) {
-            movies.unshift({ title: title.trim(), watched: false });
-            saveMovies();
-            renderMovies();
-        }
-
-        function toggleWatched(index) {
-            movies[index].watched = !movies[index].watched;
-            saveMovies();
-            renderMovies();
-        }
-
-        function deleteMovie(index) {
-            movies.splice(index, 1);
-            saveMovies();
-            renderMovies();
-        }
-
-        document.getElementById('addForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const input = document.getElementById('movieInput');
-            if (input.value.trim()) {
-                addMovie(input.value);
-                input.value = '';
-            }
-        });
-
-        renderMovies();
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
