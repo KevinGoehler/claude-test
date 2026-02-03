@@ -16,7 +16,7 @@ claude-test is a test project for experimenting with Claude Code capabilities.
 
 ```
 /
-├── LICENSE          # Unlicense (public domain)
+├── LICENSE          # All Rights Reserved (proprietary)
 ├── README.md        # Project readme
 └── CLAUDE.md        # This file
 ```
