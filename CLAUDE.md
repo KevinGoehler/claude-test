@@ -16,6 +16,10 @@ claude-test is a test project for experimenting with Claude Code capabilities.
 
 ```
 /
+├── .claude/
+│   └── skills/
+│       └── ui-ux-design/    # UI/UX design guidelines skill
+│           └── SKILL.md
 ├── LICENSE          # All Rights Reserved (proprietary)
 ├── README.md        # Project readme
 └── CLAUDE.md        # This file
